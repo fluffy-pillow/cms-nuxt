@@ -22,7 +22,7 @@
                        autocomplete="off"
                        v-validate="'required|email'"
                 >
-                <div class="error invalid-feedback" :class="{show: errors.first('email')}">
+                <div class="error invalid-feedback" :class="{show: errors.has('email')}">
                   {{ errors.first('email') }}
                 </div>
               </div>
@@ -31,9 +31,9 @@
                        type="password"
                        placeholder="Password"
                        name="password"
-                       v-validate="'required|password'"
+                       v-validate="'required'"
                 >
-                <div class="error invalid-feedback" :class="{show: errors.first('email')}">
+                <div class="error invalid-feedback" :class="{show: errors.has('password')}" data-vv-validate-on="blur">
                   {{ errors.first('password') }}
                 </div>
               </div>
@@ -46,7 +46,13 @@
                 </div>
               </div>
               <div class="kt-login__actions">
-                <button id="kt_login_signin_submit" class="btn btn-brand btn-elevate kt-login__btn-primary">Sign In</button>
+                <button id="kt_login_signin_submit"
+                        class="btn btn-brand btn-elevate kt-login__btn-primary"
+                        :disabled="bLoading"
+                        :class="(bLoading) ? buttonClass : ''"
+                >
+                  Sign In
+                </button>
               </div>
             </form>
           </div>
@@ -63,11 +69,24 @@
         data () {
           return {
             email: '',
-            password: ''
+            password: '',
+            bLoading: false,
+            buttonClass: 'kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light'
           }
         },
         methods: {
-          onSubmit (e) {
+          onSubmit () {
+            this.$validator.validateAll().then((result) => {
+              if (result) {
+                this.bLoading = true
+                setTimeout(() => {
+                  this.bLoading = false
+                  this.$router.push('/')
+                }, 2000)
+              }
+            }).catch(error => {
+              console.log(error)
+            })
           }
         }
     }
