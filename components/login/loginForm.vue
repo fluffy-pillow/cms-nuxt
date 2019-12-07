@@ -1,7 +1,7 @@
 <template>
   <form class="kt-form" action="" @submit.prevent="onSubmit">
     <transition name="fade">
-      <login-notice v-if="bFormError"></login-notice>
+      <LoginNotice v-if="bFormError"></LoginNotice>
     </transition>
 
     <div class="input-group">

@@ -1,6 +1,7 @@
 
 export default {
   mode: 'universal',
+  debug: true,
   /*
   ** Headers of the page
   */
@@ -27,7 +28,9 @@ export default {
   */
   css: [
     '@/assets/sass/style.scss',
-    '@/assets/sass/pages/login/login-3.scss'
+    '@/plugins/flaticon/flaticon.css',
+    '@/plugins/flaticon2/flaticon.css',
+    '@/plugins/line-awesome/css/line-awesome.css'
   ],
   /*
   ** Plugins to load before mounting the App
