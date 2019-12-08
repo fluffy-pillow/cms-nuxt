@@ -1,3 +1,4 @@
 export default () => ({
-  bOpen: false
+  bOpen: false,
+  bShowOverlay: false
 })

@@ -1,5 +1,8 @@
 <template>
-  <div class="kt-aside-menu-wrapper kt-grid__item kt-grid__item--fluid" id="kt_aside_menu_wrapper">
+  <div class="kt-aside-menu-wrapper kt-grid__item kt-grid__item--fluid"
+       id="kt_aside_menu_wrapper"
+       v-click-outside="handleClickOutside"
+  >
     <div id="kt_aside_menu" class="kt-aside-menu  kt-aside-menu--dropdown " data-ktmenu-vertical="1" data-ktmenu-dropdown="1" data-ktmenu-scroll="0">
       <ul class="kt-menu__nav ">
         <AsideMenuTree
@@ -19,25 +22,29 @@
 
 <script>
     import AsideMenuTree from "./AsideMenuTree";
+    import {mapActions} from 'vuex'
     import {getDepth, siblings} from '../../plugins/helpers.js'
+    import ClickOutside from 'vue-click-outside'
 
     export default {
       name: "asideMenu",
       components: {AsideMenuTree},
       data () {
           return {
+            menuItems: null,
             items: [
               {
                 title: 'Applications',
                 key: 'applications',
                 class: 'kt-menu__item--submenu-fullheight kt-menu__item--here',
                 iconClass: 'flaticon2-protection',
-                activeClassDesktop: '',
+                fullheightSubmenu: true,
                 children: [
                   {
                     title: 'Resources',
                     key: 'applications_resources',
                     class: 'kt-menu__item--submenu kt-menu__item--here',
+                    submenuMode: 'accordion',
                     children: [
                       {
                         title: 'Timesheet',
@@ -103,7 +110,6 @@
                 title: 'Add',
                 key: 'add',
                 class: '',
-                activeClassDesktop: '',
                 iconClass: 'flaticon2-calendar-5',
                 children: [
                   {
@@ -131,7 +137,6 @@
               {
                 title: 'Customers',
                 key: 'customers',
-                activeClassDesktop: '',
                 class: 'kt-menu__item--bottom',
                 iconClass: 'flaticon2-analytics-2',
                 children: [
@@ -200,7 +205,6 @@
                 title: 'Settings',
                 class: 'kt-menu__item--bottom-2',
                 key: 'settings',
-                activeClassDesktop: '',
                 iconClass: 'flaticon2-gear',
                 children: [
                   {
@@ -268,7 +272,6 @@
                 title: 'Help',
                 class: 'kt-menu__item--bottom-1',
                 key: 'help',
-                activeClassDesktop: '',
                 iconClass: 'flaticon2-hourglass-1',
                 notifications: {
                   class1: 'kt-badge--brand',
@@ -306,25 +309,52 @@
             ]
           }
         },
+        methods: {
+          ...mapActions({
+            showOverlay: 'aside/showOverlay',
+            hideOverlay: 'aside/hideOverlay'
+          }),
+          handleClickOutside () {
+            this.hideOverlay()
+            this.closeMenu()
+          },
+          closeMenu () {
+            for (let menuItem of this.menuItems) {
+              menuItem.classList.remove('kt-menu__item--open')
+              menuItem.classList.remove('kt-menu__item--open-dropdown')
+              menuItem.classList.remove('kt-menu__item--hover')
+            }
+          }
+        },
         computed: {
           itemsDepth () {
             return getDepth(this.items)
           }
         },
+        directives: {
+          ClickOutside
+        },
         mounted () {
-          let menuItems = document.querySelectorAll('.kt-aside-menu-wrapper .kt-menu__item')
-          for (let menuItem of menuItems) {
+          let that = this
+          this.menuItems = document.querySelectorAll('.kt-aside-menu-wrapper .kt-menu__item')
+          for (let menuItem of this.menuItems) {
             menuItem.querySelector('.kt-menu__link').onclick = function () {
               if (!menuItem.classList.contains('kt-menu__item--open')) {
                 for (let neighborMenuItem of siblings(menuItem)) {
-                  neighborMenuItem.classList.remove('kt-menu__item--open')
-                  neighborMenuItem.classList.remove('kt-menu__item--open-dropdown')
+                  neighborMenuItem.classList.remove('kt-menu__item--open', 'kt-menu__item--open-dropdown', 'kt-menu__item--hover')
+                  if (neighborMenuItem.classList.contains('kt-menu__item--bottom-2')) neighborMenuItem.querySelector('.kt-menu__submenu').classList.remove('kt-menu__submenu--up')
+                  if (neighborMenuItem.classList.contains('kt-menu__item--bottom-1')) neighborMenuItem.querySelector('.kt-menu__submenu').classList.remove('kt-menu__submenu--up')
+                  if (!neighborMenuItem.classList.contains('kt-menu__item--here')) that.hideOverlay()
                 }
-                menuItem.classList.add('kt-menu__item--open')
-                menuItem.classList.add('kt-menu__item--open-dropdown')
+                menuItem.classList.add('kt-menu__item--open', 'kt-menu__item--open-dropdown', 'kt-menu__item--hover')
+                if (menuItem.classList.contains('kt-menu__item--bottom-2')) menuItem.querySelector('.kt-menu__submenu').classList.add('kt-menu__submenu--up')
+                if (menuItem.classList.contains('kt-menu__item--bottom-1')) menuItem.querySelector('.kt-menu__submenu').classList.add('kt-menu__submenu--up')
+                if (menuItem.classList.contains('kt-menu__item--here')) that.showOverlay()
               } else {
-                menuItem.classList.remove('kt-menu__item--open')
-                menuItem.classList.remove('kt-menu__item--open-dropdown')
+                menuItem.classList.remove('kt-menu__item--open', 'kt-menu__item--open-dropdown', 'kt-menu__item--hover')
+                if (menuItem.classList.contains('kt-menu__item--bottom-2')) menuItem.querySelector('.kt-menu__submenu').classList.remove('kt-menu__submenu--up')
+                if (menuItem.classList.contains('kt-menu__item--bottom-1')) menuItem.querySelector('.kt-menu__submenu').classList.remove('kt-menu__submenu--up')
+
               }
             }
           }

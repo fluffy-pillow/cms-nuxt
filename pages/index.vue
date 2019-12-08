@@ -23,7 +23,7 @@ export default {
   head () {
     return {
       bodyAttrs: {
-        class: this.bAsideOpen ? this.defaultBodyClass + ' kt-aside--on' : this.defaultBodyClass
+        class: this.defaultBodyClass + ' ' + this.asideOnClass + ' ' + this.asideMenuOverlayOnClass
       }
     }
   },
@@ -35,7 +35,14 @@ export default {
   computed: {
     ...mapGetters({
       bAsideOpen: 'aside/isOpen',
-    })
+      bShowAsideOverlay: 'aside/overlayIsShow'
+    }),
+    asideOnClass () {
+      return (this.bAsideOpen) ? 'kt-aside--on' : ''
+    },
+    asideMenuOverlayOnClass () {
+      return (this.bShowAsideOverlay) ? 'kt-aside-menu-overlay--on' : ''
+    }
   }
 }
 </script>

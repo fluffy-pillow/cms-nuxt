@@ -2,6 +2,7 @@
   <li class="kt-menu__item kt-menu__item--submenu"
       :class="[item.class]"
       :data-key="item.key"
+      :data-ktmenu-submenu-mode="item.submenuMode"
   >
       <span class="kt-menu__link"
             :class="menuToggle"
@@ -26,8 +27,36 @@
         <i class="kt-menu__ver-arrow la la-angle-right" v-if="item.children">
         </i>
       </span>
-      <div class="kt-menu__submenu" v-if="item.children">
+      <div class="kt-menu__submenu" v-if="item.children && item.fullheightSubmenu">
+          <div class="kt-menu__wrapper kt-scroll ps">
+          <ul class="kt-menu__subnav">
+            <li class="kt-menu__item  kt-menu__item--parent kt-menu__item--submenu-fullheight" aria-haspopup="true">
+              <span class="kt-menu__link">
+                <span class="kt-menu__link-text">{{item.title}}</span>
+              </span>
+            </li>
+            <AsideMenuTree
+              v-for="(subitem, subkey) of item.children"
+              :key="subkey"
+              :item="subitem"
+              :id="subkey"
+              :depth="depth + 1"
+              :max-depth="maxDepth"
+            >
+            </AsideMenuTree>
+          </ul>
+
+        </div>
+
+      </div>
+
+      <div class="kt-menu__submenu" v-if="item.children && !item.fullheightSubmenu">
         <ul class="kt-menu__subnav">
+          <li class="kt-menu__item  kt-menu__item--parent kt-menu__item--submenu-fullheight" aria-haspopup="true">
+            <span class="kt-menu__link">
+              <span class="kt-menu__link-text">{{item.title}}</span>
+            </span>
+          </li>
           <AsideMenuTree
             v-for="(subitem, subkey) of item.children"
             :key="subkey"
@@ -49,8 +78,7 @@
           item: Object,
           id: Number,
           depth: Number,
-          maxDepth: Number,
-          selected: Number
+          maxDepth: Number
         },
         computed: {
           menuToggle () {
