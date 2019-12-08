@@ -13,72 +13,16 @@
 
         </AsideMenuTree>
       </ul>
-<!--      <ul class="kt-menu__nav ">
-        <li v-for="(item, key) of items"
-            :key="key"
-            class="kt-menu__item kt-menu__item--submenu"
-            :class="[item.class, {'kt-menu__item--open' : key === selected}]"
-            @click="onMenuItemClick(key)"
-        >
-          <span class="kt-menu__link kt-menu__toggle">
-            <i class="kt-menu__link-icon" :class="item.iconClass">
-            </i>
-            <span class="kt-menu__link-text">
-              {{item.title}}
-            </span>
-            <span class="kt-menu__link-badge" v-if="item.notifications">
-              <span class="kt-badge" :class="[item.notifications.class1, item.notifications.class2]">
-                {{item.notifications.count}}
-              </span>
-            </span>
-            <i class="kt-menu__ver-arrow la la-angle-right">
-
-            </i>
-          </span>
-          <div class="kt-menu__submenu">
-            <ul class="kt-menu__subnav">
-              <li v-for="(subitem, subkey) of item.children"
-                  :key="subkey"
-                  class="kt-menu__item"
-              >
-                <nuxt-link to="" class="kt-menu__link">
-                  <i v-if="subitem.iconClass"
-                     class="kt-menu__link-icon"
-                     :class="subitem.iconClass">
-
-                  </i>
-                  <i  v-if="subitem.bullet"
-                      :class="'kt-menu__link-bullet kt-menu__link-bullet--' + subitem.bullet"
-                  >
-                    <span></span>
-                  </i>
-                  <span class="kt-menu__link-text">
-                    {{subitem.title}}
-                  </span>
-                  <span class="kt-menu__link-badge" v-if="subitem.notifications">
-                    <span class="kt-badge" :class="[subitem.notifications.class1, subitem.notifications.class2]">
-                      {{subitem.notifications.count}}
-                    </span>
-                  </span>
-                  <i class="kt-menu__ver-arrow la la-angle-right" v-if="subitem.children">
-
-                  </i>
-                </nuxt-link>
-              </li>
-            </ul>
-          </div>
-        </li>
-      </ul>-->
     </div>
   </div>
 </template>
 
 <script>
     import AsideMenuTree from "./AsideMenuTree";
-    import {getDepth} from '../../plugins/helpers.js'
+    import {getDepth, siblings} from '../../plugins/helpers.js'
 
     export default {
-        name: "asideMenu",
+      name: "asideMenu",
       components: {AsideMenuTree},
       data () {
           return {
@@ -88,6 +32,7 @@
                 key: 'applications',
                 class: 'kt-menu__item--submenu-fullheight kt-menu__item--here',
                 iconClass: 'flaticon2-protection',
+                activeClassDesktop: '',
                 children: [
                   {
                     title: 'Resources',
@@ -158,6 +103,7 @@
                 title: 'Add',
                 key: 'add',
                 class: '',
+                activeClassDesktop: '',
                 iconClass: 'flaticon2-calendar-5',
                 children: [
                   {
@@ -185,6 +131,7 @@
               {
                 title: 'Customers',
                 key: 'customers',
+                activeClassDesktop: '',
                 class: 'kt-menu__item--bottom',
                 iconClass: 'flaticon2-analytics-2',
                 children: [
@@ -253,6 +200,7 @@
                 title: 'Settings',
                 class: 'kt-menu__item--bottom-2',
                 key: 'settings',
+                activeClassDesktop: '',
                 iconClass: 'flaticon2-gear',
                 children: [
                   {
@@ -320,6 +268,7 @@
                 title: 'Help',
                 class: 'kt-menu__item--bottom-1',
                 key: 'help',
+                activeClassDesktop: '',
                 iconClass: 'flaticon2-hourglass-1',
                 notifications: {
                   class1: 'kt-badge--brand',
@@ -360,6 +309,24 @@
         computed: {
           itemsDepth () {
             return getDepth(this.items)
+          }
+        },
+        mounted () {
+          let menuItems = document.querySelectorAll('.kt-aside-menu-wrapper .kt-menu__item')
+          for (let menuItem of menuItems) {
+            menuItem.querySelector('.kt-menu__link').onclick = function () {
+              if (!menuItem.classList.contains('kt-menu__item--open')) {
+                for (let neighborMenuItem of siblings(menuItem)) {
+                  neighborMenuItem.classList.remove('kt-menu__item--open')
+                  neighborMenuItem.classList.remove('kt-menu__item--open-dropdown')
+                }
+                menuItem.classList.add('kt-menu__item--open')
+                menuItem.classList.add('kt-menu__item--open-dropdown')
+              } else {
+                menuItem.classList.remove('kt-menu__item--open')
+                menuItem.classList.remove('kt-menu__item--open-dropdown')
+              }
+            }
           }
         }
     }

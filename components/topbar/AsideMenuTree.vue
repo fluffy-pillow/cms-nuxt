@@ -1,10 +1,9 @@
 <template>
   <li class="kt-menu__item kt-menu__item--submenu"
-      :class="[item.class, {'kt-menu__item--open' : showChildren}]"
+      :class="[item.class]"
       :data-key="item.key"
   >
       <span class="kt-menu__link"
-            @click.prevent="handleClick"
             :class="menuToggle"
       >
         <i class="kt-menu__link-icon la" v-if="item.iconClass"
@@ -50,18 +49,8 @@
           item: Object,
           id: Number,
           depth: Number,
-          maxDepth: Number
-    },
-        data () {
-           return {
-             showChildren: false,
-           }
-        },
-        methods: {
-          handleClick () {
-            this.showChildren = !this.showChildren
- //           console.log(e.target.offsetParent.dataset)
-          }
+          maxDepth: Number,
+          selected: Number
         },
         computed: {
           menuToggle () {
