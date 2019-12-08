@@ -3,6 +3,8 @@
       :class="[item.class]"
       :data-key="item.key"
       :data-ktmenu-submenu-mode="item.submenuMode"
+      ref="menuItem"
+      v-click-outside="handleClickOutside"
   >
       <span class="kt-menu__link"
             :class="menuToggle"
@@ -52,7 +54,10 @@
 
       <div class="kt-menu__submenu" v-if="item.children && !item.fullheightSubmenu">
         <ul class="kt-menu__subnav">
-          <li class="kt-menu__item  kt-menu__item--parent kt-menu__item--submenu-fullheight" aria-haspopup="true">
+          <li class="kt-menu__item  kt-menu__item--parent kt-menu__item--submenu-fullheight"
+              aria-haspopup="true"
+              v-if="!bMaxDepth"
+          >
             <span class="kt-menu__link">
               <span class="kt-menu__link-text">{{item.title}}</span>
             </span>
@@ -72,6 +77,8 @@
 </template>
 
 <script>
+    import ClickOutside from 'vue-click-outside'
+
     export default {
         name: "AsideMenuTree",
         props: {
@@ -80,9 +87,20 @@
           depth: Number,
           maxDepth: Number
         },
+        directives: {
+          ClickOutside
+        },
+        methods: {
+          handleClickOutside (e) {
+            this.$refs.menuItem.classList.remove('kt-menu__item--active')
+          }
+        },
         computed: {
           menuToggle () {
-            return (this.depth < this.maxDepth) ? 'kt-menu__toggle' : ''
+            return (this.bMaxDepth) ? 'kt-menu__toggle' : ''
+          },
+          bMaxDepth () {
+            return (this.depth < this.maxDepth)
           }
         }
     }

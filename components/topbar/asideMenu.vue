@@ -320,9 +320,7 @@
           },
           closeMenu () {
             for (let menuItem of this.menuItems) {
-              menuItem.classList.remove('kt-menu__item--open')
-              menuItem.classList.remove('kt-menu__item--open-dropdown')
-              menuItem.classList.remove('kt-menu__item--hover')
+              menuItem.classList.remove('kt-menu__item--open', 'kt-menu__item--open-dropdown', 'kt-menu__item--hover')
             }
           }
         },
@@ -347,15 +345,14 @@
                   if (!neighborMenuItem.classList.contains('kt-menu__item--here')) that.hideOverlay()
                 }
                 menuItem.classList.add('kt-menu__item--open', 'kt-menu__item--open-dropdown', 'kt-menu__item--hover')
+                if (!menuItem.querySelector('.kt-menu__submenu')) menuItem.classList.add('kt-menu__item--active')
                 if (menuItem.classList.contains('kt-menu__item--bottom-2')) menuItem.querySelector('.kt-menu__submenu').classList.add('kt-menu__submenu--up')
                 if (menuItem.classList.contains('kt-menu__item--bottom-1')) menuItem.querySelector('.kt-menu__submenu').classList.add('kt-menu__submenu--up')
                 if (menuItem.classList.contains('kt-menu__item--here')) that.showOverlay()
               } else {
                 menuItem.classList.remove('kt-menu__item--open', 'kt-menu__item--open-dropdown', 'kt-menu__item--hover')
                 if (menuItem.classList.contains('kt-menu__item--bottom-2')) menuItem.querySelector('.kt-menu__submenu').classList.remove('kt-menu__submenu--up')
-                if (menuItem.classList.contains('kt-menu__item--bottom-1')) menuItem.querySelector('.kt-menu__submenu').classList.remove('kt-menu__submenu--up')
-
-              }
+                if (menuItem.classList.contains('kt-menu__item--bottom-1')) menuItem.querySelector('.kt-menu__submenu').classList.remove('kt-menu__submenu--up')}
             }
           }
         }
