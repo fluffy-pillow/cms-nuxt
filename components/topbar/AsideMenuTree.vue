@@ -1,10 +1,20 @@
 <template>
   <li class="kt-menu__item kt-menu__item--submenu"
-      :class="[item.class]"
+      :class="[
+        item.class,
+        {
+          'kt-menu__item--open': bOpen,
+          'kt-menu__item--open-dropdown': bOpen,
+          'kt-menu__item--hover': bOpen,
+          'kt-menu__item--active': bActive
+        }
+      ]"
+      :data-depth="depth"
       :data-key="item.key"
       :data-ktmenu-submenu-mode="item.submenuMode"
       ref="menuItem"
       v-click-outside="handleClickOutside"
+      @click="handleClick"
   >
       <span class="kt-menu__link"
             :class="menuToggle"
@@ -29,7 +39,9 @@
         <i class="kt-menu__ver-arrow la la-angle-right" v-if="item.children">
         </i>
       </span>
-      <div class="kt-menu__submenu" v-if="item.children && item.fullheightSubmenu">
+      <div class="kt-menu__submenu" v-if="item.children && item.fullheightSubmenu"
+           :class="{'kt-menu__submenu--up': subMenuUp}"
+      >
           <div class="kt-menu__wrapper kt-scroll ps">
           <ul class="kt-menu__subnav">
             <li class="kt-menu__item  kt-menu__item--parent kt-menu__item--submenu-fullheight" aria-haspopup="true">
@@ -52,7 +64,9 @@
 
       </div>
 
-      <div class="kt-menu__submenu" v-if="item.children && !item.fullheightSubmenu">
+      <div class="kt-menu__submenu" v-if="item.children && !item.fullheightSubmenu"
+           :class="{'kt-menu__submenu--up': subMenuUp}"
+      >
         <ul class="kt-menu__subnav">
           <li class="kt-menu__item  kt-menu__item--parent kt-menu__item--submenu-fullheight"
               aria-haspopup="true"
@@ -77,6 +91,7 @@
 </template>
 
 <script>
+    import {mapActions} from 'vuex'
     import ClickOutside from 'vue-click-outside'
 
     export default {
@@ -85,15 +100,46 @@
           item: Object,
           id: Number,
           depth: Number,
-          maxDepth: Number
+          maxDepth: Number,
+        },
+        data () {
+          return {
+            bOpen: false,
+            subMenuUp: false,
+            bActive: false
+          }
         },
         directives: {
           ClickOutside
         },
         methods: {
           handleClickOutside (e) {
-            this.$refs.menuItem.classList.remove('kt-menu__item--active')
-          }
+            let el = this.$refs.menuItem
+            this.bOpen = false
+            this.bActive = false
+
+            if (el.classList.contains('kt-menu__item--bottom-2') || el.classList.contains('kt-menu__item--bottom-1'))
+              this.subMenuUp = false
+
+          },
+          handleClick () {
+            let el = this.$refs.menuItem
+            this.bOpen = true
+
+            if (el.classList.contains('kt-menu__item--bottom-2') || el.classList.contains('kt-menu__item--bottom-1')) {
+              this.subMenuUp = true
+            }
+
+            if (!this.item.children) {
+              this.bActive = true
+            }
+
+            (el.classList.contains('kt-menu__item--here')) ? this.showOverlay() : this.hideOverlay()
+          },
+          ...mapActions({
+            showOverlay: 'aside/showOverlay',
+            hideOverlay: 'aside/hideOverlay'
+          }),
         },
         computed: {
           menuToggle () {

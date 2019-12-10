@@ -1,17 +1,17 @@
 <template>
   <div id="kt_header" class="kt-header kt-grid kt-grid--ver  kt-header--fixed ">
 
-    <HeaderMenu/>
+    <HeaderMenuContainer/>
     <HeaderTopbar/>
   </div>
 </template>
 
 <script>
-    import HeaderMenu from "./headerMenu";
     import HeaderTopbar from "./headerTopbar";
+    import HeaderMenuContainer from "./HeaderMenuContainer";
     export default {
         name: "headerDefault",
-      components: {HeaderTopbar, HeaderMenu}
+      components: {HeaderMenuContainer, HeaderTopbar}
     }
 </script>
 

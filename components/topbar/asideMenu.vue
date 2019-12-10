@@ -316,13 +316,13 @@
           }),
           handleClickOutside () {
             this.hideOverlay()
-            this.closeMenu()
+//            this.closeMenu()
           },
-          closeMenu () {
+ /*         closeMenu () {
             for (let menuItem of this.menuItems) {
               menuItem.classList.remove('kt-menu__item--open', 'kt-menu__item--open-dropdown', 'kt-menu__item--hover')
             }
-          }
+          }*/
         },
         computed: {
           itemsDepth () {
@@ -333,7 +333,7 @@
           ClickOutside
         },
         mounted () {
-          let that = this
+/*          let that = this
           this.menuItems = document.querySelectorAll('.kt-aside-menu-wrapper .kt-menu__item')
           for (let menuItem of this.menuItems) {
             menuItem.querySelector('.kt-menu__link').onclick = function () {
@@ -354,7 +354,7 @@
                 if (menuItem.classList.contains('kt-menu__item--bottom-2')) menuItem.querySelector('.kt-menu__submenu').classList.remove('kt-menu__submenu--up')
                 if (menuItem.classList.contains('kt-menu__item--bottom-1')) menuItem.querySelector('.kt-menu__submenu').classList.remove('kt-menu__submenu--up')}
             }
-          }
+          }*/
         }
     }
 </script>

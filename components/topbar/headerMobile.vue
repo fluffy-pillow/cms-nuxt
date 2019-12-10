@@ -15,8 +15,8 @@
       </button>
       <button class="kt-header-mobile__toolbar-toggler"
               id="kt_header_mobile_toggler"
-              @click="toggleToolbar"
-              :class="{'kt-header-mobile__toolbar-toggler--active' : bToolbarOpen}"
+              @click="toggleHeaderMenu"
+              :class="{'kt-header-mobile__toolbar-toggler--active' : bHeaderMenuOpen}"
       >
         <span></span>
       </button>
@@ -40,14 +40,14 @@
           ...mapActions({
             toggleAside: 'aside/toggle',
             toggleTopbar: 'topbar/toggle',
-            toggleToolbar: 'toolbar/toggle'
+            toggleHeaderMenu: 'headerMenu/toggle'
           })
         },
         computed: {
           ...mapGetters({
             bAsideOpen: 'aside/isOpen',
             bTopbarOpen: 'topbar/isOpen',
-            bToolbarOpen: 'toolbar/isOpen'
+            bHeaderMenuOpen: 'headerMenu/isOpen'
           })
         }
     }

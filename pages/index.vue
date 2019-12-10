@@ -23,7 +23,10 @@ export default {
   head () {
     return {
       bodyAttrs: {
-        class: this.defaultBodyClass + ' ' + this.asideOnClass + ' ' + this.asideMenuOverlayOnClass
+        class: this.defaultBodyClass + ' '
+        + this.asideOnClass + ' '
+        + this.asideMenuOverlayOnClass + ' '
+        + this.headerMenuOn
       }
     }
   },
@@ -35,13 +38,17 @@ export default {
   computed: {
     ...mapGetters({
       bAsideOpen: 'aside/isOpen',
-      bShowAsideOverlay: 'aside/overlayIsShow'
+      bShowAsideOverlay: 'aside/overlayIsShow',
+      bHeaderMenuOpen: 'headerMenu/isOpen'
     }),
     asideOnClass () {
       return (this.bAsideOpen) ? 'kt-aside--on' : ''
     },
     asideMenuOverlayOnClass () {
       return (this.bShowAsideOverlay) ? 'kt-aside-menu-overlay--on' : ''
+    },
+    headerMenuOn () {
+      return (this.bHeaderMenuOpen) ? ' kt-header-menu-wrapper--on' : ''
     }
   }
 }
