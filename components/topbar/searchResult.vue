@@ -13,9 +13,13 @@
              v-for="(subitem, subkey) of item.items"
              :key="subkey"
         >
-          <div class="kt-quick-search__item-img" :class="iconType(item.category)">
+          <div class="kt-quick-search__item-img" v-if="subitem.image" :class="iconType(item.category)">
             <img :src="subitem.image" alt>
           </div>
+          <div class="kt-quick-search__item-icon" v-if="subitem.iconClass">
+            <i :class="subitem.iconClass"></i>
+          </div>
+
           <div class="kt-quick-search__item-wrapper">
             <span class="kt-quick-search__item-title">
               {{subitem.title}}
@@ -42,6 +46,9 @@
             switch (category) {
               case 'Documents': {
                 ret = 'kt-quick-search__item-img--file'
+                break
+              }
+              default : {
                 break
               }
             }
