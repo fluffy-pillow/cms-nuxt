@@ -31,6 +31,7 @@
                 >
                 <a class="nav-link" data-toggle="tab" role="tab"
                    :class="{active: activeTab === key}"
+                   style="cursor: pointer"
                 >
                   {{tab}}
                 </a>
@@ -44,7 +45,7 @@
              :key="key"
              :class="{active: tabs.includes(notificationsInfo.type) && tabs.indexOf(notificationsInfo.type) === activeTab}"
           >
-            <div class="kt-notification kt-margin-t-10 kt-margin-b-10 kt-scroll ps ps--active-y"
+            <perfect-scrollbar class="kt-notification kt-margin-t-10 kt-margin-b-10 kt-scroll ps ps--active-y"
                  data-scroll="true"
                  data-height="300"
                  data-mobile-height="200"
@@ -79,7 +80,7 @@
                   </div>
                 </div>
               </template>
-            </div>
+            </perfect-scrollbar>
           </div>
         </div>
       </form>
@@ -107,7 +108,27 @@
                     iconClass: 'flaticon2-line-chart kt-font-success',
                     title: ' New order has been received',
                     time: '2 hrs ago'
-                  }
+                  },
+                  {
+                    iconClass: 'flaticon2-box-1 kt-font-brand',
+                    title: ' New customer is received',
+                    time: '3 hrs ago'
+                  },
+                  {
+                    iconClass: 'flaticon2-chart2 kt-font-danger',
+                    title: ' Application has been received',
+                    time: '3 hrs ago'
+                  },
+                  {
+                    iconClass: 'flaticon2-image-file kt-font-warning',
+                    title: ' New file has been uploaded',
+                    time: '5 hrs ago'
+                  },
+                  {
+                    iconClass: 'flaticon2-drop kt-font-info',
+                    title: ' New user feedback received',
+                    time: '8 hrs ago'
+                  },
                 ]
               },
               {
@@ -141,8 +162,8 @@
 
             let scrollContents = this.$refs.scrollContent
             for (let scrollContent of scrollContents) {
-              scrollContent.style.maxHeight = (window.screen.width > 1024) ? scrollContent.dataset.height + 'px' :
-                scrollContent.dataset.mobileHeight + 'px'
+              scrollContent.$el.style.maxHeight = (window.screen.width > 1024) ? scrollContent.$el.dataset.height + 'px' :
+                scrollContent.$el.dataset.mobileHeight + 'px'
             }
           }
         },
