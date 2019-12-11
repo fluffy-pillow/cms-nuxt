@@ -11,6 +11,8 @@
       </span>
       <span class="kt-hidden kt-badge kt-badge--danger"></span>
     </div>
+
+
     <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl"
          :class="{show: bOpen}"
          :style="{transform: 'translate3d(' + dropdownFitPosition + 'px, 0, 0)'}"

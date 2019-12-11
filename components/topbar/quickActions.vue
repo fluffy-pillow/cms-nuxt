@@ -1,12 +1,19 @@
 <template>
-  <div class="kt-header__topbar-item dropdown">
-    <div class="kt-header__topbar-wrapper" data-toggle="dropdown" data-offset="10px,0px">
-      <span class="kt-header__topbar-icon kt-header__topbar-icon--warning"><i class="flaticon2-gear"></i></span>
+  <div class="kt-header__topbar-item dropdown"
+       :class="{show: bOpen}"
+       v-click-outside="close"
+  >
+  <div class="kt-header__topbar-wrapper" data-toggle="dropdown" data-offset="10px,0px" ref="topbarWrapper">
+      <span class="kt-header__topbar-icon kt-header__topbar-icon--warning"  @click="toggle">
+        <i class="flaticon2-gear"></i>
+      </span>
     </div>
-    <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl">
+    <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl"
+         :class="{show: bOpen}"
+         :style="{transform: 'translate3d(' + dropdownFitPosition + 'px, 0, 0)'}"
+         ref="dropdownMenuFit"
+    >
       <form>
-
-        <!--begin: Head -->
         <div class="kt-head kt-head--skin-light">
           <h3 class="kt-head__title">
             User Quick Actions
@@ -15,9 +22,7 @@
           </h3>
         </div>
 
-        <!--end: Head -->
 
-        <!--begin: Grid Nav -->
         <div class="kt-grid-nav kt-grid-nav--skin-light">
           <div class="kt-grid-nav__row">
             <a href="#" class="kt-grid-nav__item">
@@ -72,16 +77,44 @@
             </a>
           </div>
         </div>
-
-        <!--end: Grid Nav -->
       </form>
     </div>
   </div>
 </template>
 
 <script>
+    import ClickOutside from 'vue-click-outside'
+
     export default {
-        name: "quickActions"
+        name: "quickActions",
+        data () {
+          return {
+            bOpen: false,
+            dropdownFitPosition: 0
+          }
+        },
+        methods: {
+          toggle () {
+            this.bOpen = !this.bOpen
+          },
+          close () {
+            this.bOpen = false
+          },
+          handleWindowResize () {
+            let topbarWrapperRect = this.$refs.topbarWrapper.getBoundingClientRect()
+            this.dropdownFitPosition = -380 + topbarWrapperRect.width
+          }
+        },
+        directives: {
+          ClickOutside
+        },
+        mounted () {
+          this.handleWindowResize()
+          window.addEventListener("resize", this.handleWindowResize)
+        },
+        beforeDestroy () {
+          window.removeEventListener("resize", this.handleWindowResize)
+        }
     }
 </script>
 
