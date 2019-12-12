@@ -58,8 +58,8 @@
 
 
         <div class="kt-notification__custom kt-space-between">
-          <a href="custom/user/login-v2.html" target="_blank" class="btn btn-label btn-label-brand btn-sm btn-bold">Sign Out</a>
-          <a href="custom/user/login-v2.html" target="_blank" class="btn btn-clean btn-sm btn-bold">Upgrade Plan</a>
+          <nuxt-link to="" target="_blank" class="btn btn-label btn-label-brand btn-sm btn-bold">Sign Out</nuxt-link>
+          <nuxt-link to="" target="_blank" class="btn btn-clean btn-sm btn-bold">Upgrade Plan</nuxt-link>
         </div>
       </div>
 
@@ -116,7 +116,8 @@
           },
           handleWindowResize () {
             let topbarWrapperRect = this.$refs.topbarWrapper.getBoundingClientRect()
-            this.dropdownFitPosition = topbarWrapperRect.x - topbarWrapperRect.width - 405
+            this.dropdownFitPosition = (window.innerWidth > 1024) ? topbarWrapperRect.x - topbarWrapperRect.width - 405 :
+              topbarWrapperRect.x - 260
           }
         },
         directives: {

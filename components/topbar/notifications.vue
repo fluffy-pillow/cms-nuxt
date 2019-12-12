@@ -46,7 +46,7 @@
              v-for="(notificationsInfo, key) of notifications"
              :key="key"
              :class="{active: tabs.includes(notificationsInfo.type) && tabs.indexOf(notificationsInfo.type) === activeTab}"
-          >
+            >
             <perfect-scrollbar class="kt-notification kt-margin-t-10 kt-margin-b-10 kt-scroll ps ps--active-y"
                  data-scroll="true"
                  data-height="300"
@@ -160,11 +160,12 @@
           },
           handleWindowResize () {
             let topbarWrapperRect = this.$refs.topbarWrapper.getBoundingClientRect()
-            this.dropdownFitPosition = -380 + topbarWrapperRect.width
+            this.dropdownFitPosition = (window.innerWidth > 1024)  ? -380 + topbarWrapperRect.width :
+              -290 + topbarWrapperRect.width
 
             let scrollContents = this.$refs.scrollContent
             for (let scrollContent of scrollContents) {
-              scrollContent.$el.style.maxHeight = (window.screen.width > 1024) ? scrollContent.$el.dataset.height + 'px' :
+              scrollContent.$el.style.maxHeight = (window.innerWidth > 1024) ? scrollContent.$el.dataset.height + 'px' :
                 scrollContent.$el.dataset.mobileHeight + 'px'
             }
           }

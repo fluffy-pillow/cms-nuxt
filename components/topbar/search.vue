@@ -169,10 +169,11 @@
           },
           handleWindowResize () {
             let dropdownRect = this.$refs.dropdown.getBoundingClientRect()
-            this.dropdownFitPosition = Math.floor(dropdownRect.x - dropdownRect.width - 20)
+            this.dropdownFitPosition = (window.innerWidth > 1024) ? Math.floor(dropdownRect.x - dropdownRect.width - 20) :
+              Math.floor(dropdownRect.x)
 
             let searchWrapper = this.$refs.searchWrapper.$el
-            searchWrapper.style.height = (window.screen.width > 1024) ? searchWrapper.dataset.height + 'px' :
+            searchWrapper.style.height = (window.innerWidth > 1024) ? searchWrapper.dataset.height + 'px' :
              searchWrapper.dataset.mobileHeight + 'px'
           }
         },

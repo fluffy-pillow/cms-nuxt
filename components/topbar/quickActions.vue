@@ -102,7 +102,8 @@
           },
           handleWindowResize () {
             let topbarWrapperRect = this.$refs.topbarWrapper.getBoundingClientRect()
-            this.dropdownFitPosition = -380 + topbarWrapperRect.width
+            this.dropdownFitPosition = (window.innerWidth > 1024)  ? -380 + topbarWrapperRect.width :
+              -290 + topbarWrapperRect.width
           }
         },
         directives: {

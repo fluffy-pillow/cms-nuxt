@@ -130,7 +130,8 @@
           },
           handleWindowResize () {
             let topbarWrapperRect = this.$refs.topbarWrapper.getBoundingClientRect()
-            this.dropdownFitPosition = -380 + topbarWrapperRect.width
+            this.dropdownFitPosition = (window.innerWidth > 1024)  ? -380 + topbarWrapperRect.width :
+              -290 + topbarWrapperRect.width
 
             let scrollContent = this.$refs.scrollContent.$el
             scrollContent.style.height = (window.screen.width > 1024) ? scrollContent.dataset.height + 'px' :

@@ -9,6 +9,7 @@
         </div>
       </div>
     </div>
+    <QuickPanelContainer/>
   </div>
 </template>
 
@@ -18,15 +19,18 @@ import {mapGetters} from 'vuex'
 import HeaderMobile from "../components/topbar/headerMobile";
 import AsideContainer from "../components/topbar/asideContainer";
 import HeaderDefault from "../components/topbar/headerDefault";
+import QuickPanelContainer from "../components/topbar/QuickPanelContainer";
 export default {
-  components: {HeaderDefault, AsideContainer, HeaderMobile},
+  components: {QuickPanelContainer, HeaderDefault, AsideContainer, HeaderMobile},
   head () {
     return {
       bodyAttrs: {
         class: this.defaultBodyClass + ' '
         + this.asideOnClass + ' '
         + this.asideMenuOverlayOnClass + ' '
-        + this.headerMenuOn
+        + this.headerMenuOn + ' '
+        + this.topbarMobileOnClass + ' '
+        + this.quickPanelOnclass
       }
     }
   },
@@ -39,7 +43,9 @@ export default {
     ...mapGetters({
       bAsideOpen: 'aside/isOpen',
       bShowAsideOverlay: 'aside/overlayIsShow',
-      bHeaderMenuOpen: 'headerMenu/isOpen'
+      bHeaderMenuOpen: 'headerMenu/isOpen',
+      bTopbarOpen: 'topbar/isOpen',
+      bQuickPanelOpen: 'quickPanel/isOpen',
     }),
     asideOnClass () {
       return (this.bAsideOpen) ? 'kt-aside--on' : ''
@@ -49,6 +55,12 @@ export default {
     },
     headerMenuOn () {
       return (this.bHeaderMenuOpen) ? ' kt-header-menu-wrapper--on' : ''
+    },
+    topbarMobileOnClass () {
+      return (this.bTopbarOpen) ? ' kt-header__topbar--mobile-on' : ''
+    },
+    quickPanelOnclass () {
+      return (this.bQuickPanelOpen) ? ' kt-quick-panel--on' : ''
     }
   }
 }
