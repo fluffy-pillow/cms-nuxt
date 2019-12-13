@@ -22,6 +22,7 @@ import HeaderDefault from "../components/topbar/headerDefault";
 import QuickPanelContainer from "../components/topbar/QuickPanelContainer";
 export default {
   components: {QuickPanelContainer, HeaderDefault, AsideContainer, HeaderMobile},
+  middleware: ['redirectIfNotAuth'],
   head () {
     return {
       bodyAttrs: {

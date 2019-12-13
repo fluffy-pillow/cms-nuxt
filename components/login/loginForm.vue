@@ -1,7 +1,7 @@
 <template>
   <form class="kt-form" action="" @submit.prevent="onSubmit">
     <transition name="fade">
-      <LoginNotice v-if="bFormError"></LoginNotice>
+      <LoginNotice v-if="bError"></LoginNotice>
     </transition>
 
     <div class="input-group">
@@ -11,6 +11,7 @@
              name="email"
              autocomplete="off"
              v-validate="'required|email'"
+             v-model="email"
       >
       <div class="error invalid-feedback" :class="{show: errors.has('email')}">
         {{ errors.first('email') }}
@@ -23,6 +24,7 @@
              placeholder="Password"
              name="password"
              v-validate="'required'"
+             v-model="password"
       >
       <div class="error invalid-feedback" :class="{show: errors.has('password')}" data-vv-validate-on="blur">
         {{ errors.first('password') }}
@@ -52,6 +54,7 @@
 
 <script>
     import LoginNotice from "./loginNotice";
+    import {mapActions, mapGetters} from 'vuex'
     export default {
       name: "loginForm",
       components: {LoginNotice},
@@ -61,24 +64,34 @@
           password: '',
           bLoading: false,
           buttonClass: 'kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light',
-          bFormError: false
         }
       },
       methods: {
+        ...mapActions({
+          login: 'auth/login'
+        }),
         onSubmit () {
-          this.$validator.validateAll().then((result) => {
+
+        this.$validator.validateAll().then((result) => {
             if (result) {
               this.bLoading = true
-              setTimeout(() => {
+              let data = {email: this.email, password: this.password}
+              this.login(data).then(res => {
                 this.bLoading = false
-//                this.bFormError = true
-                this.$router.push('/')
-              }, 2000)
+                if (!res.error) {
+                  this.$router.push('/')
+                }
+              })
             }
           }).catch(error => {
             console.log(error)
           })
         }
+      },
+      computed: {
+        ...mapGetters({
+          bError: 'auth/isError'
+        })
       }
 
     }

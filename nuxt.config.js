@@ -1,7 +1,7 @@
-
 export default {
-  mode: 'universal',
+  mode: 'spa',
   debug: true,
+
   /*
   ** Headers of the page
   */
@@ -36,7 +36,7 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '@/plugins/perfectScrollbar.js'
+    '@/plugins/perfectScrollbar.js', '@/plugins/axios.js'
   ],
   /*
   ** Nuxt.js dev-modules
@@ -47,8 +47,11 @@ export default {
   ** Nuxt.js modules
   */
   modules: [
-    ['nuxt-validate']
+  'nuxt-validate', '@nuxtjs/axios'
   ],
+  axios: {
+    baseURL: 'http://62.210.82.44:9989',
+  },
   /*
   ** Build configuration
   */

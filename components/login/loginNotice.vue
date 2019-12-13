@@ -1,7 +1,7 @@
 <template>
   <div class="alert alert-danger alert-dismissible">
     <div class="alert-text">
-      Incorrect username or password. Please try again.
+      {{errorInfo.message}}
     </div>
     <div class="alert-close">
       <i class="flaticon2-cross kt-icon-sm">
@@ -12,8 +12,15 @@
 </template>
 
 <script>
+    import {mapGetters} from 'vuex'
+
     export default {
-        name: "loginNotice"
+        name: "loginNotice",
+        computed: {
+          ...mapGetters({
+            errorInfo: 'auth/getErrorInfo'
+          })
+        }
     }
 </script>
 

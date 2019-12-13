@@ -5,9 +5,9 @@
       <div class="kt-grid__item kt-grid__item--fluid kt-login__wrapper">
         <div class="kt-login__container">
           <div class="kt-login__logo">
-            <a href="#">
+            <nuxt-link to="/">
               <img src="../assets/media/logos/logo-7.png">
-            </a>
+            </nuxt-link>
           </div>
           <div class="kt-login__signin">
             <div class="kt-login__head">
@@ -22,11 +22,17 @@
 </template>
 
 <script>
-
+    import {mapGetters} from 'vuex'
     import LoginForm from "../components/login/loginForm";
     export default {
       name: "login",
+      middleware: ['redirectIfAuth'],
       components: {LoginForm},
+      computed: {
+        ...mapGetters({
+          token: 'user/getToken'
+        })
+      }
     }
 </script>
 

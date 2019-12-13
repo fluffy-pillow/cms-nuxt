@@ -23,7 +23,7 @@
 <script>
     import AsideMenuTree from "./AsideMenuTree";
     import {mapActions} from 'vuex'
-    import {getDepth, siblings} from '../../plugins/helpers.js'
+    import {getDepth, siblings} from '../../helpers.js'
     import ClickOutside from 'vue-click-outside'
 
     export default {
